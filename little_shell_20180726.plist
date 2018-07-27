@@ -36,24 +36,6 @@
 				<string>App Subtitle</string>
 				<key>title</key>
 				<string>小贝壳</string>
-				<!--配置允许http下载文件，否则文件服务器需要使用https协议 -->
-				<key>NSAppTransportSecurity</key>
-				<dict>
-					<key>NSAllowsArbitraryLoads</key>
-					<false/>
-					<!--
-					<key>NSExceptionDomains</key>
-					<dict>
-						<key>139.159.143.128</key>
-						<dict>
-							<key>NSExceptionAllowsInsecureHTTPLoads</key>
-							<true/>
-							<key>NSIncludesSubdomains</key>
-							<true/>
-						</dict>
-					</dict>
-					-->
-				</dict>
 			</dict>
 		</dict>
 	</array>
