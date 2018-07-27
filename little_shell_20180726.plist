@@ -16,8 +16,10 @@
 				<dict>
 					<key>kind</key>
 					<string>display-image</string>
+					<!--
 					<key>needs-shine</key>
 					<true/>
+					-->
 					<key>url</key>
 					<string>https://app.su77.net/static/app/down.png</string>
 				</dict>
@@ -38,7 +40,7 @@
 				<key>NSAppTransportSecurity</key>
 				<dict>
 					<key>NSAllowsArbitraryLoads</key>
-					<true/>
+					<false/>
 					<!--
 					<key>NSExceptionDomains</key>
 					<dict>
