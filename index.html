@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/> -->
+    <title>IBR统一采购系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/index.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/table.css">
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/table.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/table-column.css">
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/table-column.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/icon.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.common.min.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0;
+        font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        color: #595959;
+      }
+      .v-center {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+      }
+      .icon-field {
+        display: flex !important;
+        flex-flow: row nowrap;
+        align-items: center;
+      }
+      .icon-field > .value {
+        margin-left: 8px;
+      }
+      .header-wrapper {
+        background-color: #23CF5F;
+        color: white;
+      }
+      .header-wrapper .header {
+        width: 1162px;
+        height: 80px;
+        margin: 0 auto;
+        justify-content: space-between;
+      }
+      .header > .title {
+        font-size: 24px;
+      }
+      .text-btn {
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-block;
+      }
+      .text-btn:hover, .round-btn:hover {
+        opacity: 0.8;
+      }
+      .text-btn:not(:first-child) {
+        margin-left: 70px;
+      }
+      .round-btn {
+        cursor: pointer;
+        padding: 4px 16px;
+        border: 1px solid white;
+        border-radius: 2em;
+        line-height: 1;
+      }
+      .round-btn {
+        margin-left: 22px;
+      }
+      .content-wrapper {
+        background-color: #F5FAFD;
+        overflow: hidden;
+      }
+      .content-wrapper .content {
+        width: 1162px;
+        margin: 0 auto;
+        padding-bottom: 50px;
+      }
+      .content > .section {
+        margin-top: 50px;
+      }
+      .content > .section > .section-title {
+        font-weight: 800;
+        font-size: 20px;
+        color: #262626;
+      }
+      .content > .section > .section-content {
+        margin-top: 13px;
+      }
+      .total-cards {
+        display: flex;
+        justify-content: space-between;
+      }
+      .total-cards > .card {
+        padding: 30px;
+        flex: 0 0 306px;
+        height: 124px;
+        border-radius: 10px;
+        box-shadow: 0px 8px 15px 0px rgba(0,0,0,0.2);
+        color: white;
+        position: relative;
+      }
+      .total-cards > .card.card1 {
+        background:linear-gradient(314deg,rgba(35,207,95,1) 0%,rgba(87,218,53,1) 100%);
+        box-shadow: 0px 8px 15px 0px rgba(87,218,53,0.5);
+      }
+      .total-cards > .card.card2 {
+        background:linear-gradient(90deg,rgba(82,168,255,1) 0%,rgba(56,125,255,1) 100%);
+        box-shadow: 0px 8px 15px 0px rgba(56,125,255,0.5);
+      }
+      .total-cards > .card.card3 {
+        background:linear-gradient(90deg,rgba(254,156,21,1) 0%,rgba(252,121,50,1) 100%);
+        box-shadow: 0px 8px 15px 0px rgba(252,121,50,0.5);
+      }
+      .total-cards > .card.card1 .icon {
+        color: #23CF5F;
+      }
+      .total-cards > .card.card2 .icon {
+        color: #387DFF;
+      }
+      .total-cards > .card.card3 .icon {
+        color: #FE7C4B;
+      }
+      .total-cards > .card .icon {
+        position: absolute;
+        right: 30px;
+        top: 30px;
+        width: 55px;
+        height: 55px;
+        border-radius: 59%;
+        background-color: white;
+      }
+      .total-cards > .card .icon i {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+      .total-cards > .card .title {
+        font-size: 16px;
+      }
+      .total-cards > .card .value {
+        margin-top: 27px;
+        font-size: 12px;
+      }
+      .total-cards > .card .value > span {
+        font-size: 26px;
+        margin-right: 12px;
+      }
+      .total-cards > .card .date {
+        position: absolute;
+        bottom: 30px;
+        font-size: 14px;
+      }
+      .area-group {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+      }
+      .area-group > .area {
+        padding: 30px;
+        flex: none;
+        border-radius: 10px;
+        background-color: white;
+        /* box-shadow: 0px 8px 15px 0px rgba(0,0,0,0.1); */
+        box-sizing: border-box;
+        border: 1px solid #E8ECEF;
+        position: relative;
+      }
+      .area-group > .area > .area-title {
+        font-size: 16px;
+        color: #262626;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      .error-rate {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        width: 212px;
+        height: 201px;
+        border-right: 1px solid #DCDFE6;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .error-rate > .name {
+        font-size: 14px;
+        color: #909399;
+      }
+      .error-rate > .value {
+        font-size: 32px;
+        color: #262626;
+      }
+      .last-total {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: column nowrap;
+      }
+      .last-total > .row {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: row nowrap;
+      }
+      .last-total > .row > .cell {
+        height: 107px;
+        flex: 0 auto;
+        font-size: 14px;
+      }
+      .last-total > .row > .cell > .value {
+        margin: 10px 0 20px 0;
+      }
+      .last-total > .row > .cell > .value > span {
+        font-size: 26px;
+        color: #23CF5F;
+        margin-right: 12px;
+      }
+      .last-total > .split-line {
+        height: 1px;
+        width: 100%;
+        background-color: #E5E5E5;
+      }
+      .block-field {
+        font-size: 14px;
+        line-height: 2;
+        display: inline-block;
+        width: 150px;
+      }
+      .block-field > .name {
+        position: relative;
+        padding-left: 10px;
+      }
+      .block-field > .name::before {
+        content: '';
+        display: block;
+        width: 4px;
+        height: 10px;
+        background-color: #518DFF;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+      .block-field > .value > span {
+        font-size: 26px;
+        color: #518DFF;
+        margin-right: 12px;
+      }
+      .footer {
+        font-size: 12px;
+        color: rgba(0,0,0,0.45);
+        height: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .footer > .split-line {
+        width: 1px;
+        height: 29px;
+        background-color: #DBDDDF;
+        margin: 0 37px;
+      }
+      .skeleton {
+        height: 100%;
+        overflow: hidden;
+      }
+      .skeleton div {
+        background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+        animation: ant-skeleton-loading 1.4s ease infinite;
+        background-size: 400% 100%;
+        height: 16px;
+        margin-bottom: 16px;
+      }
+      .skeleton div:first-child {
+        height: 26px;
+        margin-bottom: 26px;
+        width: 30% !important;
+      }
+      .skeleton div:nth-child(3n+1) {
+        width: 60%;
+      }
+      @keyframes ant-skeleton-loading {
+        0% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0 50%;
+        }
+      }
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <div class="header-wrapper">
+        <div class="header v-center">
+          <div class="title">IBR统一采购系统</div>
+          <div class="flex-right v-center">
+            <div class="text-btn">打印下单</div>
+            <div class="text-btn">订单记录</div>
+            <div class="text-btn icon-field">
+              <div style="width: 32px; display: inline-block;">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="width: 100%;" viewBox="0 0 100 100">
+                  <rect x="0" y="0" width="100" height="100" style="fill-opacity:0"/>
+                    <circle cx="50" cy="50" r="50" stroke="white" stroke-width="1" fill="white" />
+                  <circle cx="50" cy="50" r="17" fill="#23CF5F" />
+                  <rect x="20" y="70" rx="20" ry="20" width="60" height="50"
+                  style="fill: #23CF5F;"/>
+                </svg>
+              </div>
+              <span class="value">{{ user.name }}</span>
+            </div>
+            <div class="round-btn exit">退出</div>
+          </div>
+        </div>
+      </div>
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="section">
+            <div class="section-title">预算控制总况</div>
+            <div class="section-content total-cards">
+              <div v-skeleton="loadingFlags[0]" class="card card1">
+                <div class="icon">
+                    <i class="el-icon-document"></i>
+                </div>
+                <div class="title">总下单次数</div>
+                <div class="value"><span>{{ totalData.orderNumber.value }}</span>次</div>
+                <div class="date">截止时间：{{ totalData.orderNumber.endDate }}</div>
+              </div>
+              <div v-skeleton="loadingFlags[1]" class="card card2">
+                <div class="icon">
+                    <i class="el-icon-document-checked"></i>
+                </div>
+                <div class="title">下单通过件数</div>
+                <div class="value"><span>{{ totalData.passedNumber.value }}</span>次</div>
+                <div class="date">截止时间：{{ totalData.orderNumber.endDate }}</div>
+              </div>
+              <div v-skeleton="loadingFlags[2]" class="card card3">
+                <div class="icon">
+                    <i class="el-icon-document-checked"></i>
+                </div>
+                <div class="title">有效控制率</div>
+                <div class="value">
+                  <span>{{ totalData.rate.value < 1 ? totalData.rate.value * 100 : totalData.rate.value }}</span>%
+                </div>
+                <div class="date">截止时间：{{ totalData.rate.endDate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">订单统计</div>
+            <div class="section-content area-group">
+              <div v-skeleton="loadingFlags[3]" class="area" style="width: 581px; height: 416px">
+                <div id="order-chart1" style="height: 100%;"></div>
+              </div>
+              <div v-skeleton="loadingFlags[4]" class="area" style="width: 549px; height: 416px">
+                <div id="order-chart2" style="height: 100%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">资金统计</div>
+            <div class="section-content area-group">
+              <div v-skeleton="loadingFlags[5]" class="area" style="width: 766px; height: 320px; position: relative;">
+                <div id="asset-chart1" style="height: 100%;"></div>
+                <div class="error-rate">
+                  <div class="name">误差率</div>
+                  <div class="value">16.01%</div>
+                </div>
+              </div>
+              <div v-skeleton="loadingFlags[6]" class="area" style="width: 369px; height: 320px">
+                <div id="asset-chart2" style="height: 100%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">最近统计</div>
+            <div class="section-content area-group">
+              <div v-skeleton="loadingFlags[7]" class="area last-total" style="width: 100%; height: 354px; padding: 30px 74px;">
+                <div class="row">
+                  <div class="cell">
+                    <div class="name">最多单个用户下单个数</div>
+                    <div class="value"><span>999</span>次</div>
+                    <div class="extra">用户：pjx</div>
+                  </div>
+                  <div class="cell">
+                    <div class="name">最多单个用户下单金额</div>
+                    <div class="value"><span>9,200,000</span>元</div>
+                    <div class="extra">时间：2019-12-13</div>
+                  </div>
+                  <div class="cell">
+                    <div class="name">最多单日下单个数</div>
+                    <div class="value"><span>40,000</span>件</div>
+                    <div class="extra">时间：2019-12-13</div>
+                  </div>
+                </div>
+                <div class="split-line"></div>
+                <div class="row">
+                  <div class="cell">
+                    <div class="name">最高单日订单金额</div>
+                    <div class="value"><span>9,990,000</span>元</div>
+                    <div class="extra">时间：2019-12-13</div>
+                  </div>
+                  <div class="cell">
+                    <div class="name">最高单日签收件数</div>
+                    <div class="value"><span>42,000</span>件</div>
+                    <div class="extra">时间：2019-12-13</div>
+                  </div>
+                  <div class="cell">
+                    <div class="name">单笔最高订单金额</div>
+                    <div class="value"><span>9,999</span>元</div>
+                    <div class="extra">时间：2019-12-13</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">区块链数据</div>
+            <div class="section-content area-group">
+              <div v-skeleton="loadingFlags[8]" class="area" style="width: 376px; height: 370px">
+                <div class="area-title">区块数据</div>
+                <div>
+                  <div class="block-field">
+                    <div class="name">区块高度</div>
+                    <div class="value"><span>5600000</span></div>
+                  </div>
+                  <div class="block-field">
+                    <div class="name">区块确认次数</div>
+                    <div class="value"><span>1</span>次</div>
+                  </div>
+                </div>
+                <div style="margin-top: 60px;">
+                  <div class="block-field">
+                    <div class="name">节点数</div>
+                    <div class="value"><span>20</span>个</div>
+                  </div>
+                  <div class="block-field">
+                    <div class="name">智能合约版本迭代次数</div>
+                    <div class="value"><span>10</span>次</div>
+                  </div>
+                </div>
+              </div>
+              <div v-skeleton="loadingFlags[9]" class="area" style="width: 758px; height: 370px">
+                <div class="area-title">区块实时交易数据</div>
+                <el-table
+                  :data="blockTabData"
+                  size="mini"
+                  style="width: 100%;"
+                  :header-cell-style="{'background-color': '#F5F6F8'}"
+                >
+                  <el-table-column prop="hash" label="哈希" min-width="300"></el-table-column>
+                  <el-table-column prop="type" label="交易类别" :formatter="typeFmtFunc"></el-table-column>
+                  <el-table-column prop="blockHeight" label="区块高度"></el-table-column>
+                  <el-table-column prop="time" label="交易时间" width="160"></el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div>版权所有：深圳建科院 Copyright(C)IBR</div>
+        <div class="split-line"></div>
+        <div>备案信息：粤ICP备08011321号-14</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      directives: {
+        skeleton: {
+          inserted(el) {
+            //console.log('inserted');
+            const ske = document.createElement('div');
+            ske.className = 'skeleton active';
+            for (let i=0; i<10; i++) {
+              ske.appendChild(document.createElement('div'));
+            }
+            el.appendChild(ske);
+            el.skeletonEle = ske;
+          },
+          update(el, binding) {
+            //console.log('updated');
+            for (let c of el.children) {
+              c.style.display = !!binding.value ? 'none' : '';
+            }
+            el.skeletonEle.style.display = !!binding.value ? '' : 'none';
+          }
+        }
+      },
+      data: {
+        loadingFlags: [true, true, true, true, true, true, true, true, true, true],
+        user: {
+          name: '刘丽丽'
+        },
+        totalData: {
+          orderNumber: {
+            value: 1000000,
+            endDate: '2019/12/13 23:59:59'
+          },
+          passedNumber: {
+            value: 800000,
+            endDate: '2019/12/13 23:59:59'
+          },
+          rate: {
+            value: 0.2,
+            endDate: '2019/12/13 23:59:59'
+          }
+        },
+        blockTabData: [
+          {
+            hash: '0x0dc0a8b1ef0b31e7aecc5a38c89c50bfdef2becbfc6e47e8658c87279c368312',
+            type: 0,
+            blockHeight: 5999999,
+            time: '2019-12-13 23:59:59'
+          },
+          {
+            hash: '0x0dc0a8b1ef0b31e7aecc5a38c89c50bfdef2becbfc6e47e8658c87279c368362',
+            type: 1,
+            blockHeight: 5999998,
+            time: '2019-12-13 23:59:59'
+          },
+          {
+            hash: '0x0dc0a8b1ef0b31e7aecc5a38c89c50bfdef2becbfc6e47e8658a87279c368362',
+            type: 0,
+            blockHeight: 5999997,
+            time: '2019-12-13 23:59:59'
+          },
+          {
+            hash: '0x0dc0a8b1ef0b31e7aecc5a38c89c50bfdff2becbfc6e47e8658c87279c368362',
+            type: 0,
+            blockHeight: 5999996,
+            time: '2019-12-13 23:59:59'
+          }
+        ],
+        chartOptions: {
+          order: [
+            {
+              title: {
+                text: '日高峰统计'
+              },
+              tooltip: {},
+              legend: {
+                data:['下单件数', '发单件数'],
+                bottom: 0
+              },
+              xAxis: {
+                data: ["12-8","12-9","12-10","12-11","12-12","12-13"],
+                axisLine: {
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                }
+              },
+              yAxis: {
+                axisLine: {
+                  show: false,
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                },
+                splitLine: {
+                  lineStyle: {
+                    type: 'dotted',
+                    color: ['#eee'],
+                    width: 1
+                  }
+                }
+              },
+              series: [{
+                name: '下单件数',
+                type: 'bar',
+                data: [5, 20, 36, 10, 12, 20],
+                color: '#387DFF'
+              },{
+                name: '发单件数',
+                type: 'bar',
+                data: [5, 16, 32, 10, 10, 22],
+                color: '#52D679'
+              }]
+            },
+            {
+              title: {
+                text: '一周订单情况'
+              },
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                    color: '#eee',
+                    type: 'solid'
+                  }
+                }
+              },
+              legend: {
+                data:['下单通过', '预测控制拦截'],
+                bottom: 0
+              },
+              xAxis: {
+                data: ["12-7","12-8","12-9","12-10","12-11","12-12","12-13"],
+                axisLine: {
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                }
+              },
+              yAxis: {
+                axisLine: {
+                  show: false,
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                },
+                splitLine: {
+                  lineStyle: {
+                    type: 'dotted',
+                    color: ['#eee'],
+                    width: 1
+                  }
+                }
+              },
+              series: [{
+                name: '下单通过',
+                type: 'line',
+                data: [650, 389, 382, 465, 472, 460, 482],
+                color: '#52D679'
+              },{
+                name: '预测控制拦截',
+                type: 'line',
+                data: [330, 196, 182, 235, 220, 245, 320],
+                color: '#FE7C4B'
+              }]
+            }
+          ],
+          asset: [
+            {
+              title: {
+                text: '个人资金预估情况'
+              },
+              tooltip: {},
+              legend: {
+                data:['下单预估金额', '实际订单金额'],
+                bottom: 0,
+                left: 376
+              },
+              grid: {
+                left: 376
+              },
+              xAxis: {
+                data: [],
+                axisLine: {
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                }
+              },
+              yAxis: {
+                axisLine: {
+                  show: false,
+                  lineStyle: {
+                    color: '#8590B3'
+                  }
+                },
+                splitLine: {
+                  lineStyle: {
+                    type: 'dotted',
+                    color: ['#eee'],
+                    width: 1
+                  }
+                }
+              },
+              series: [{
+                name: '下单预估金额',
+                type: 'bar',
+                data: [7000],
+                color: '#387DFF'
+              },{
+                name: '实际订单金额',
+                type: 'bar',
+                data: [8120],
+                color: '#52D679'
+              }],
+              barWidth: 30,
+              barGap: '150%'
+            },
+            {
+              title: {
+                text: '部门项目分布'
+              },
+              tooltip: {},
+              legend: {
+                orient: 'vertical',
+                data:['部门', '项目'],
+                bottom: 0,
+                icon: 'circle',
+                formatter: function(name) {
+                  let value = name === '部门' ? 8888 : 9999;
+                  return `${name}     ${value}元`;
+                }
+              },
+              series: [{
+                name: '部门项目分布',
+                type: 'pie',
+                radius: ['30%', '50%'],
+                avoidLabelOverlap: false,
+                data: [
+                  {value: 8888, name: '部门', itemStyle: {color: '#387DFF'}},
+                  {value: 9999, name: '项目', itemStyle: {color: '#52D679'}}
+                ],
+                label: {
+                  normal: {
+                    show: false,
+                    position: 'center'
+                  },
+                  emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                    }
+                  }
+                },
+                labelLine: {
+                  normal: {
+                      show: false
+                  }
+                }
+              }]
+            }
+          ]
+        }
+      },
+      mounted() {
+        this.loadingFlags.forEach((flag, index) => {
+          setTimeout(() => {
+            this.$set(this.loadingFlags, index, false);
+          }, (index + 1) * 1000);
+        });
+        // 渲染图表
+        this.orderChart1 = echarts.init(document.getElementById('order-chart1'));
+        this.orderChart2 = echarts.init(document.getElementById('order-chart2'));
+        this.orderChart1.setOption(this.chartOptions.order[0]);
+        this.orderChart2.setOption(this.chartOptions.order[1]);
+        this.assetChart1 = echarts.init(document.getElementById('asset-chart1'));
+        this.assetChart2 = echarts.init(document.getElementById('asset-chart2'));
+        this.assetChart1.setOption(this.chartOptions.asset[0]);
+        this.assetChart2.setOption(this.chartOptions.asset[1]);
+      },
+      methods: {
+        typeFmtFunc(row) {
+          return row.type === 0 ? '下单' : '签收';
+        }
+      }
+    }).$mount('#app');
+  </script>
+</html>
