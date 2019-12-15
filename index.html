@@ -300,7 +300,7 @@
     </style>
   </head>
   <body>
-    <div id="app" v-cloak>
+    <div id="app" :style="`zoom: ${zoom}`" v-cloak>
       <div class="header-wrapper">
         <div class="header v-center">
           <div class="title">IBR统一采购系统</div>
@@ -499,6 +499,7 @@
         }
       },
       data: {
+        zoom: 1,
         loadingFlags: [true, true, true, true, true, true, true, true, true, true],
         user: {
           name: '刘丽丽'
@@ -739,6 +740,9 @@
             }
           ]
         }
+      },
+      created() {
+        this.zoom = window.screen.width / 1920;
       },
       mounted() {
         this.loadingFlags.forEach((flag, index) => {
