@@ -765,13 +765,13 @@
 
     window.onresize = function() {
       let zoomStyle;
-      if (window.screen.width >= 1162) {
+      if (document.body.clientWidth >= 1162) {
         zoomStyle = '';
       } else {
-        let zoomRate = window.screen.width / 1162;
-        zoomStyle = `transform: scale(${zoomRate}); transform-origin: 0 0; width: 1162px;`;
+        let zoomRate = document.body.clientWidth / 1202;  // 1202 = 1162 + 20 * 2   20是在缩放模式下对两边留出的边距
+        zoomStyle = `transform: scale(${zoomRate}); transform-origin: 0 0; width: 1202px;`;
       }
-      document.body.style = zoomStyle;
+      document.getElementById('app').style = zoomStyle;
     };
     window.onresize();
   </script>
