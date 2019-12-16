@@ -764,14 +764,17 @@
     }).$mount('#app');
 
     window.onresize = function() {
+      let app = document.getElementById('app');
       let zoomStyle;
       if (document.body.clientWidth >= 1162) {
         zoomStyle = '';
+        document.body.style.height = '';
       } else {
         let zoomRate = document.body.clientWidth / 1202;  // 1202 = 1162 + 20 * 2   20是在缩放模式下对两边留出的边距
         zoomStyle = `transform: scale(${zoomRate}); transform-origin: 0 0; width: 1202px;`;
+        document.body.style.height = app.clientHeight * zoomRate + 'px';
       }
-      document.getElementById('app').style = zoomStyle;
+      app.style = zoomStyle;
     };
     window.onresize();
   </script>
